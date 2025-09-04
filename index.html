@@ -3,119 +3,344 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>AI + MCP Powered Booking Ops</title>
+  <title>Alive — AI Booking & Ops Showcase</title>
+  <meta name="description" content="Agentic AI for experiences: autonomous booking, partner routing, dynamic pricing, and real-time communications.">
   <style>
-    body {font-family: sans-serif; margin:0; background:#f9fafb; color:#1e293b;}
-    h1, h2, h3 {color: #0f172a;}
-    header, section {max-width:1100px; margin:auto; padding:60px 20px;}
-    .grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;}
-    .card {background:#fff; padding:2rem; border-radius:1rem; box-shadow:0 4px 16px rgba(0,0,0,0.05);}
-    img {width:100%; border-radius:12px; margin-bottom:1rem;}
-    .cta {background:#1e293b; color:white; text-align:center; padding:80px 20px;}
-    .btn {background:#3b82f6; color:white; padding:14px 28px; border:none; border-radius:6px; text-decoration:none; font-size:1rem;}
-    form input, form textarea {
-      width:100%; padding:12px; margin-bottom:1rem; border-radius:6px; border:1px solid #cbd5e1;
+    :root{
+      /* Brand */
+      --primary:#eb5270;   /* rose */
+      --secondary:#fd7865; /* peach */
+      --orange:#f97315;
+      --maroon:#e74c3c;
+      --grey:#707070;
+
+      /* Surface */
+      --bg:#fff9f9;
+      --surface:#ffffff;
+      --ink:#171717;
+      --muted:#5b5b5b;
+      --border:#efefef;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+
+      /* Layout */
+      --radius:18px;
+      --pad:28px;
+      --pad-lg:48px;
+      --gap:24px;
+      --max:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      background:
+        radial-gradient(1200px 800px at 10% -10%,rgba(253,120,101,.12),transparent),
+        radial-gradient(900px 700px at 110% 30%,rgba(235,82,112,.12),transparent),
+        var(--bg);
+      color:var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height:1.6;
+    }
+    img{display:block; width:100%; height:auto; border-radius:14px}
+    a{color:var(--primary); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+
+    /* Header */
+    header{display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 0}
+    .brand{display:flex; align-items:center; gap:12px; min-width:0}
+    .brand img{width:150px; height:auto; border-radius:10px}
+    .brand h1{margin:0; font-size:18px; letter-spacing:.2px; color:var(--grey); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    nav{display:flex; gap:12px; flex-wrap:wrap}
+    nav a{padding:10px 12px; color:var(--muted); border-radius:10px}
+    nav a:hover{background:#fff; box-shadow:var(--shadow)}
+    .btn{
+      display:inline-block; background:linear-gradient(90deg,var(--primary),var(--secondary));
+      color:#fff; border:none; padding:14px 20px; border-radius:12px; box-shadow:var(--shadow); font-weight:600;
+    }
+    .btn-outline{
+      display:inline-block; border:1px solid var(--primary); color:var(--primary);
+      padding:12px 18px; border-radius:12px; background:transparent; font-weight:600;
+    }
+
+    /* HERO */
+    .hero{
+      margin:10px 0 30px 0;
+      border-radius:var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.6)),
+        radial-gradient(1200px 800px at -10% -10%, rgba(235,82,112,.18), transparent);
+      display:grid; grid-template-columns:0.75fr 1fr; gap:40px; align-items:center;
+      padding:var(--pad-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+    .hero h2{margin:0 0 14px 0; font-size:40px; line-height:1.15}
+    .hero p{margin:0 0 18px 0; color:var(--muted); font-size:18px}
+    .badges{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px}
+    .pill{font-size:12px; color:#7a7a7a; background:#fff; border:1px solid var(--border); padding:8px 12px; border-radius:999px}
+    .hero .media{
+      aspect-ratio:16/9; overflow:hidden; border-radius:16px; border:1px solid var(--border);
+      background:#fff;
+    }
+    .hero .media img{width:100%; height:100%; object-fit:cover}
+
+    /* Sections */
+    .section{margin:54px 0}
+    .section h3{margin:0 0 10px 0; font-size:26px}
+    .sub{color:var(--muted); margin:0 0 18px 0}
+    .grid{display:grid; gap:var(--gap); grid-template-columns:repeat(12,1fr)}
+    .col-3{grid-column:span 3}
+    .col-4{grid-column:span 4}
+    .col-5{grid-column:span 5}
+    .col-6{grid-column:span 6}
+    .col-7{grid-column:span 7}
+    .col-8{grid-column:span 8}
+    .col-12{grid-column:span 12}
+    @media (max-width:1100px){ .col-5,.col-7{grid-column:span 12} }
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr; padding:28px}
+      .hero h2{font-size:32px}
+      .col-3,.col-4,.col-6,.col-8{grid-column:span 12}
+      nav{gap:8px}
+    }
+    @media (max-width:560px){
+      header{flex-direction:column; align-items:flex-start}
+      .hero{gap:22px}
+      .hero h2{font-size:28px}
+    }
+
+    .card{
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); padding:var(--pad); box-shadow:var(--shadow)
+    }
+    .card h4{margin:10px 0 6px 0; font-size:18px; line-height:1.3}
+    .card p{margin:0; color:var(--muted)}
+    .thumb{
+      margin:-6px -6px 14px -6px; border-radius:12px; overflow:hidden; height:auto;
+      aspect-ratio: 16/9; /* consistent thumbnails */
+      background:#fff;
+      border:1px solid var(--border);
+    }
+    .thumb img{width:100%; height:100%; object-fit:cover}
+
+    /* KPIs */
+    .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:22px}
+    @media(max-width:980px){ .kpis{grid-template-columns:repeat(2,1fr)} }
+    .kpi{
+      background:var(--surface); border:1px solid var(--border); border-radius:16px;
+      padding:24px; text-align:center; box-shadow:var(--shadow)
+    }
+    .kpi .num{font-size:28px; font-weight:800; color:var(--primary)}
+    .kpi .cap{color:var(--muted); margin-top:6px}
+
+    .divider{height:1px; background:linear-gradient(90deg,transparent,#eee,transparent); margin:34px 0}
+
+    .cta{text-align:center; padding:36px; background:#fff; border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow)}
+    footer{margin:40px 0 24px 0; color:var(--muted); font-size:13px; text-align:center}
+
+    /* A11y/UX niceties */
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto; transition:none !important; animation:none !important}
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <img src="/images/alive_logo.png" alt="Alive logo"/>
+        <h1 style="white-space: break-spaces;">Mind blowing experiences near you</h1>
+      </div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#usecases">Use-cases</a>
+        <a href="#architecture">Architecture</a>
+      </nav>
+    </header>
 
-<header>
-  <h1>Autonomous Booking & Operations Platform</h1>
-  <p>AI agents running on scalable MCP infrastructure for intelligent bookings, partner routing & automated communication workflows.</p>
-  <img src="https://miro.medium.com/v2/resize:fit:1200/format:webp/1*JWWlh9z4gfB3dCvWGMEf2Q.jpeg" alt="AI Data Center Visualization">
-</header>
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="badges">
+          <span class="pill">Mind-blowing experiences</span>
+          <span class="pill">Experiences for everyone</span>
+          <span class="pill">Experiences for teams</span>
+          <span class="pill">AI Driven</span>
+        </div>
+        <h2>Autonomous booking & operations for real-world experiences</h2>
+        <p>Alive uses agentic AI to plan, price, route partners, and communicate in real-time — lifting conversion while cutting manual effort.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:10px">
+          <a href="#contact" class="btn">Get a product tour</a>
+          <a href="#features" class="btn-outline">See how it works →</a>
+        </div>
+      </div>
+      <div class="">
+        <img src="/images/ai_in_alive_experiences.jpg" alt="Curated experiences collage" loading="lazy"/>
+      </div>
+    </section>
 
-<section>
-  <h2>⚙️ Core Operational Features</h2>
-  <div class="grid">
-    <div class="card">
-      <img src="https://www.nvidia.com/content/dam/en-zz/Solutions/data-center/h100/nvidia-h100-datacenter-5c50-d.jpg" alt="MCP GPU Servers">
-      <h3>MCP-Accelerated Scheduling</h3>
-      <p>Leverages multi-core processors to run concurrent booking simulations and conflict resolution at scale.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.ctfassets.net/uwf0n1j71a7j/5hXtExRWK0bI4Rn9d9HRAZ/d6bdf1adfbd79b69b8aa0eaed1ffb9a9/AI_automation.png" alt="AI Automating Ops">
-      <h3>Agentic Workflow Automation</h3>
-      <p>AI agents autonomously assign tasks, match partners, notify stakeholders, and optimize flow based on real-time data.</p>
-    </div>
-    <div class="card">
-      <img src="https://www.hpe.com/content/dam/hpe/shared-publishing/Images/data-center-infrastructure-and-ai.jpg" alt="Smart Data Center AI">
-      <h3>Smart Infrastructure Orchestration</h3>
-      <p>System continuously monitors system load, scaling AI pipelines up or down using multi-core orchestration logic.</p>
-    </div>
+    <!-- KPIs (hidden placeholder) -->
+    <section class="section" style="display:none;">
+      <h3>Impact at a glance</h3>
+      <p class="sub">What teams see after enabling agentic bookings & automated partner routing.</p>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="num">↑ 18–32%</div>
+          <div class="cap">Conversion lift</div>
+          <img src="/images/kpi-conversion.webp" alt="Conversion chart" style="margin-top:10px" loading="lazy"/>
+        </div>
+        <div class="kpi">
+          <div class="num">↓ 25–40%</div>
+          <div class="cap">Ops manual effort</div>
+          <img src="/images/kpi-ops.webp" alt="Ops effort chart" style="margin-top:10px" loading="lazy"/>
+        </div>
+        <div class="kpi">
+          <div class="num">≤ 90s</div>
+          <div class="cap">Avg. SLA routing</div>
+          <img src="/images/kpi-sla.webp" alt="SLA routing visual" style="margin-top:10px" loading="lazy"/>
+        </div>
+        <div class="kpi">
+          <div class="num">↑ NPS</div>
+          <div class="cap">Live updates delight</div>
+          <img src="/images/kpi-nps.webp" alt="NPS visual" style="margin-top:10px" loading="lazy"/>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Core Features -->
+    <section id="features" class="section">
+      <h3>Core capabilities</h3>
+      <p class="sub">Purpose-built for experience marketplaces: B2C bookings and B2B events.</p>
+
+      <div class="grid">
+        <article class="card col-4">
+          <div class="thumb"><img src="/images/ai-inventory-management2.jpg" alt="Scheduling engine" loading="lazy"/></div>
+          <h4 style="color:var(--primary)">MCP-accelerated scheduling</h4>
+          <p>Multi-core simulations resolve slot conflicts, travel time, capacity & vendor calendars.</p>
+        </article>
+
+        <article class="card col-4">
+          <div class="thumb"><img src="/images/agentic-flow.png" alt="AI agents workflow" loading="lazy"/></div>
+          <h4 style="color:var(--maroon)">Agentic workflow automation</h4>
+          <p>Autonomous agents execute booking steps, follow-ups, exceptions, and escalations with SLAs.</p>
+        </article>
+
+        <article class="card col-4">
+          <div class="thumb"><img src="/images/dynamic-pricing.png" alt="Dynamic pricing" loading="lazy"/></div>
+          <h4 style="color:var(--orange)">Dynamic pricing & add-ons</h4>
+          <p>Inventory-sensitive pricing and smart cross-sells (cab, F&amp;B, gear) with guardrails.</p>
+        </article>
+
+        <article class="card col-4">
+          <div class="thumb"><img src="/images/routing_partners.png" alt="Partner routing" loading="lazy"/></div>
+          <h4>Routing & partner scoring</h4>
+          <p>Match by distance, capacity, reliability and recent performance; fallback vendors auto-selected.</p>
+        </article>
+
+        <article class="card col-4">
+          <div class="thumb"><img src="/images/customer_comms.png" alt="Customer communications" loading="lazy"/></div>
+          <h4>Real-time customer comms</h4>
+          <p>WhatsApp/SMS/email with live status, map pins, reminders and add-on nudges.</p>
+        </article>
+
+        <article class="card col-4">
+          <div class="thumb"><img src="/images/revenue.png" alt="Analytics dashboards" loading="lazy"/></div>
+          <h4>Revenue & margins analytics</h4>
+          <p>Unified B2C + B2B KPIs: gross, cost, add-ons, refunds, platform fee; IST-bucketed series.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Role Benefits -->
+    <section class="section">
+      <h3>Benefits by role</h3>
+      <div class="grid">
+        <div class="card col-4">
+          <div class="thumb"><img src="/images/role_customers.png" alt="Happy customers" loading="lazy"/></div>
+          <h4>Customers</h4>
+          <p>Instant slot confirmation, frictionless reschedules & refunds, personalized add-ons.</p>
+        </div>
+        <div class="card col-4">
+          <div class="thumb"><img src="/images/role_admin.png" alt="Admins dashboard" loading="lazy"/></div>
+          <h4>Admins</h4>
+          <p>Smart queues, proactive alerts, one-glance revenue/margins, SLA auto-triggers.</p>
+        </div>
+        <div class="card col-4">
+          <div class="thumb"><img src="/images/role_partner.png" alt="Partners operations" loading="lazy"/></div>
+          <h4>Partners</h4>
+          <p>Auto-dispatch with fair scoring, calendar sync, capacity guardrails, transparent payouts.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Use-cases -->
+    <section id="usecases" class="section">
+      <h3>High-leverage use-cases</h3>
+      <div class="grid">
+        <div class="card col-4">
+          <div class="thumb"><img src="/images/weekend_fresh-pics.png" alt="Fresh picks curation" loading="lazy"/></div>
+          <h4 style="color:var(--primary)">Weekends “Fresh Picks” automation</h4>
+          <p>Auto-curate & boost trending experiences based on conversion velocity, refund risk, and inventory burn.</p>
+        </div>
+        <div class="card col-4">
+          <div class="thumb"><img src="/images/love_retention.png" alt="Most loved experiences" loading="lazy"/></div>
+          <h4 style="color:var(--maroon)">Most-Loved retention flows</h4>
+          <p>Trigger win-backs and loyalty nudges using experience affinity and seasonality windows.</p>
+        </div>
+        <div class="card col-4">
+          <div class="thumb"><img src="/images/cab_addons.png" alt="Cab and add-ons" loading="lazy"/></div>
+          <h4>Cab + Add-on</h4>
+          <p>Attach transport, gear, or F&amp;B with time-boxed SLAs and real-time status.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Architecture -->
+    <section id="architecture" class="section">
+      <h3>Under the hood</h3>
+      <p class="sub">Composable services + agent layer, designed for reliability and clarity.</p>
+      <div class="grid">
+        <div class="card col-7">
+          <div class="thumb" style="margin:0 0 12px 0"><img src="/images/architecture.png" alt="Architecture diagram" loading="lazy"/></div>
+          <h4>Architecture</h4>
+          <p><b>Agent layer:</b> task planners, partner matchers, comms bot<br/>
+             <b>Scheduling core:</b> IST-aware calendar + capacity engine<br/>
+             <b>Pricing service:</b> demand, weather, lead-time signals<br/>
+             <b>Data model:</b> unified B2C/B2B schema; time-series aggregation</p>
+        </div>
+        <div class="card col-5">
+          <div class="thumb" style="margin:0 0 12px 0"><img src="/images/data_security.png" alt="Data & trust" loading="lazy"/></div>
+          <h4>Data & trust</h4>
+          <p>PII minimization, scoped tokens, audit logs for routing/pricing changes, idempotent ops with retries/DLQ.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h3 style="margin:0 0 6px 0">Transform your experience ops with agentic AI</h3>
+      <p class="sub" style="margin:0 0 16px 0">From discovery to “Most-Loved” retention — deliver delightful, reliable experiences at scale.</p>
+      <a href="#contact" class="btn">Request a live demo</a>
+    </section>
+
+    <div class="divider"></div>
+
+    <footer>
+      © <span id="y"></span> Alive. Built for experiences. <span style="color:var(--grey)">Lifestyle product for everyone, Individual or Teams</span>
+    </footer>
   </div>
-</section>
 
-<section>
-  <h2>💡 Benefits For Every Role</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Customers</h3>
-      <ul>
-        <li>Instant booking decisions</li>
-        <li>Live agentic assistant</li>
-        <li>Rescheduling automation</li>
-        <li>Real-time status tracking</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Admins</h3>
-      <ul>
-        <li>Smart queue routing</li>
-        <li>Proactive alerting</li>
-        <li>Analytics with decision AI</li>
-        <li>SLA violation auto-triggers</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Partners</h3>
-      <ul>
-        <li>Auto dispatch logic</li>
-        <li>Behavior-based scoring</li>
-        <li>Transparent revenue AI</li>
-        <li>Smart KYC + onboarding</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section>
-  <h2>🔭 Future Scope & Roadmap</h2>
-  <div class="grid">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7" alt="Autonomous AI Agent">
-      <h3>Voice-Based AI Agents</h3>
-      <p>Allow users to interact via voice with natural-language booking, rescheduling, and support.</p>
-    </div>
-    <div class="card">
-      <img src="https://www.analyticsinsight.net/wp-content/uploads/2021/08/AI-and-Edge-Computing.jpg" alt="AI + Edge Computing">
-      <h3>Edge AI for Local Ops</h3>
-      <p>Deploy edge inference servers to handle ultra-low latency bookings and geo-specific decisions offline.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1593642634315-48f5414c3ad9" alt="Intelligent Dashboards">
-      <h3>Real-Time Simulation Dashboards</h3>
-      <p>Admins can test and simulate AI behavior before pushing changes—via digital twin environments.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cta">
-  <h2>Transform Your Operations with Agentic AI</h2>
-  <p>Build the next-gen autonomous booking infrastructure powered by intelligent multi-core compute.</p>
-  <a href="#contact" class="btn">Schedule a Demo</a>
-</section>
-
-<section id="contact">
-  <h2>📬 Let's Connect</h2>
-  <form>
-    <input type="text" placeholder="Name" name="name" required />
-    <input type="email" placeholder="Email" name="email" required />
-    <textarea rows="5" placeholder="Your message..." name="message" required></textarea>
-    <button type="submit" class="btn">Send</button>
-  </form>
-</section>
-
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
